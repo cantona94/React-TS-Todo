@@ -1,12 +1,15 @@
 import { FC, useState, useEffect, useRef } from 'react';
 import { TodoList } from './TodoList';
-import { ITodo } from '../types/data';
+
+import { useAppDispatch } from '../hooks/hook'
+import { addTodo } from '../store/todoSlice';
+
+import '../App.css';
 
 export const App: FC = () => {
     const [value, setValue] = useState('');
-    const [todos, setTodos] = useState<ITodo[]>([]);
-
     const inputRef = useRef<HTMLInputElement>(null);
+    const dispatch = useAppDispatch();
 
     const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         setValue(e.target.value);
@@ -14,34 +17,15 @@ export const App: FC = () => {
 
     const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
         if (e.key === 'Enter') {
-            addTodo();
+            handleAction();
         }
     }
 
-    const addTodo = () => {
+    const handleAction = () => {
         if (value) {
-            setTodos([...todos, {
-                id: Date.now(),
-                title: value,
-                complete: false,
-            }]);
+            dispatch(addTodo(value));
             setValue('');
         }
-    }
-
-    const removeTodo = (id: number): void => {
-        setTodos(todos.filter(todo => todo.id !== id))
-    }
-
-    const toggleTodo = (id: number): void => {
-        setTodos(todos.map(todo => {
-            if (todo.id !== id) return todo;
-
-            return {
-                ...todo,
-                complete: !todo.complete
-            }
-        }))
     }
 
     useEffect(() => {
@@ -50,12 +34,14 @@ export const App: FC = () => {
         }
     }, [])
 
-    return <div>
-        <div>
-            <input value={value} onChange={handleChange} onKeyDown={handleKeyDown} ref={inputRef} />
-            <button onClick={addTodo}>add</button>
+    return (
+        <div className='App'>
+            <div>
+                <input className='Input' value={value} onChange={handleChange} onKeyDown={handleKeyDown} ref={inputRef} />
+                <button className='ButtonAdd' onClick={handleAction}>add</button>
+            </div>
+            <TodoList />
         </div>
-        <TodoList items={todos} removeTodo={removeTodo} toggleTodo={toggleTodo} />
-    </div>
+    )
 }
 

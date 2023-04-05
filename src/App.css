@@ -1,0 +1,36 @@
+.App {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Todos {
+    margin: 7px 0;
+}
+
+.Title {
+    margin: 3px;
+}
+
+.Input {
+    padding: 5px;
+}
+
+.ButtonAdd {
+    padding: 5px;
+    background: green;
+    color: white;
+    cursor: pointer;
+}
+
+.ButtonRemove {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: red;
+    cursor: pointer;
+}
+
+input:checked+span {
+    text-decoration: line-through;
+  }

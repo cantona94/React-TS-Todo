@@ -1,5 +1,9 @@
 export interface ITodo {
-    id: number;
+    id: string;
     title: string;
     complete: boolean;
 };
+
+ export interface TodosState {
+    list: ITodo[];
+  }
